@@ -170,6 +170,7 @@ class Bullet {
     if (this.totalOutTimer) {
       clearTimeout(this.totalOutTimer);
     }
+    ReactDOM.unmountComponentAtNode(this.element);
     this.element.remove();
   }
 

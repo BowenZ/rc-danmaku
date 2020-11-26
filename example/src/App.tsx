@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import Danmaku from './lib';
+import Danmaku from '../../src/index';
+// import Danmaku from '../../lib';
 
 const textArr = Array.from(
   '通过对平面中竖直和水平方向的分析我们将宽泛的弹幕重叠问题收敛为轨道中相邻弹幕两两之间的追及问题最终获得了将候选弹幕挂载到合适轨道中的调度策略'
@@ -29,7 +30,7 @@ const TestDanmaku: React.FC = () => {
   useEffect(() => {
     const danmakuIns = new Danmaku('.danmaku-wrapper', {
       rowHeight: 40,
-      speed: 200,
+      speed: 120,
     });
     danmakuInsRef.current = danmakuIns;
   }, []);
@@ -209,10 +210,9 @@ const Wrapper = styled.div`
   align-items: center;
   height: 100vh;
   input[type='text'] {
-    padding: 0.2em 1.45em;
-    width: 300px;
-    /* prettier-ignore */
-    max-width: 300PX;
+    padding: 0.2em;
+    width: 150px;
+    max-width: 150px;
   }
   button {
     outline: none;
@@ -231,7 +231,7 @@ const Wrapper = styled.div`
   }
   .danmaku-wrapper {
     width: 90%;
-    height: 600px;
+    height: 300px;
     background-color: #000;
   }
 `;
