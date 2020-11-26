@@ -1,0 +1,36 @@
+// 配置项明细可查看 https://www.tslang.cn/docs/handbook/compiler-options.html
+{
+  "compilerOptions": {
+    "target": "es5", // 指定 ECMAScript 目标版本: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'，就是编译成哪个版本的js
+    "lib": ["dom", "dom.iterable", "esnext"], // 指定要包含在编译中的库文件
+    // "allowJs": true, // 允许编译 javascript 文件
+    "skipLibCheck": true, // 忽略所有的声明文件（ *.d.ts）的类型检查。
+    "allowSyntheticDefaultImports": true, // 允许从没有设置默认导出的模块中默认导入。当为false时引入模块的时候必须以* as的形式，例如`import * as React from 'react'`，当为true时可以用import React from 'react'，但要注意，他要配合module是esModule的格式或者--esModuleInterop为true的时候，因为react是commonjs写的，并没有default,所以import React from 这种default引入是不对的，具体参考https://blog.leodots.me/post/40-think-about-allowSyntheticDefaultImports.html
+    "esModuleInterop": true,
+    "strict": true, // 启用所有严格类型检查选项（开启这个标识其他严格检查选项都会同时开启）
+    "forceConsistentCasingInFileNames": true, // 禁止对同一个文件的不一致的引用。
+    "module": "esnext", // 模块生成的形式，指定使用模块: 'commonjs', 'amd', 'system', 'umd' or 'es2015'
+    "moduleResolution": "node", // 选择模块解析策略： 'node' (Node.js) or 'classic' (TypeScript pre-1.6)
+    "resolveJsonModule": true,
+    // "isolatedModules": true, // 将每个文件做为单独的模块 （与 'ts.transpileModule' 类似）.
+    "noEmit": true, // 不生成输出文件,即编译后不会生成任何js文件
+    "jsx": "react", // 指定 jsx 代码的生成: 'preserve', 'react-native', or 'react'
+    "baseUrl": "./", // 用于解析非相对模块名称的基目录
+    "rootDir": "src",
+    "sourceMap": false,
+    "noUnusedLocals": true, // 若有未使用的局部变量则抛错。
+    "noUnusedParameters": true, // 若有未使用的参数则抛错。
+    "noImplicitReturns": true, // 不是函数的所有返回路径都有返回值时报错。
+    "noImplicitAny": false, // 在表达式和声明上有隐含的 any类型时报错。
+    "noFallthroughCasesInSwitch": true, // 报告switch语句的fallthrough错误。（即，不允许switch的case语句贯穿）
+    "outDir": "lib", // 重定向输出目录。
+    "importHelpers": true, // 从 tslib 导入辅助工具函数（比如 __extends， __rest等）
+    "paths": {
+      // 模块名到基于 baseUrl 的路径映射的列表
+      "*": ["types/*"],
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "lib", "esm", "tests", "components/**/__tests__"]
+}

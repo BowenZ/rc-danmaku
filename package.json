@@ -1,0 +1,110 @@
+{
+  "name": "rc-danmaku",
+  "version": "0.1.0",
+  "description": "React 弹幕组件",
+  "repository": "BowenZ/rc-danmaku",
+  "homepage": "https://github.com/BowenZ/rc-danmaku",
+  "license": "MIT",
+  "keywords": [
+    "弹幕",
+    "danmaku",
+    "barrage",
+    "bullet",
+    "react"
+  ],
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "scripts": {
+    "build-types": "tsc -d --emitDeclarationOnly --outDir ./types --noEmit false",
+    "build": "node tools/build.js",
+    "lint": "eslint src --ext .ts,.tsx,.js,.jsx",
+    "pub": "npm run build && npm publish"
+  },
+  "files": [
+    "lib",
+    "es"
+  ],
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.1",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-transform-runtime": "^7.11.0",
+    "@babel/preset-env": "^7.12.7",
+    "@babel/preset-react": "^7.10.4",
+    "@babel/preset-typescript": "^7.10.4",
+    "@commitlint/cli": "^9.1.2",
+    "@commitlint/config-conventional": "^9.1.2",
+    "@mdx-js/mdx": "^1.6.16",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-transition-group": "^4.4.0",
+    "@typescript-eslint/eslint-plugin": "^4.8.2",
+    "@typescript-eslint/parser": "^4.8.2",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "8.1.0",
+    "chalk": "^4.1.0",
+    "eslint": "^7.7.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-import-resolver-typescript": "^2.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.6",
+    "eslint-plugin-react-hooks": "^4.1.0",
+    "execa": "^4.0.3",
+    "fs-extra": "^9.0.1",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.13",
+    "prettier": "^2.0.5",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "typescript": "^4.0.2",
+    "webpack": "^4.44.1"
+  },
+  "peerDependencies": {
+    "react": ">=17.0.1",
+    "react-dom": ">=17.0.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "last 7 versions",
+      "not ie <= 8",
+      "ios >= 8",
+      "android >= 4.0",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "prettier": {
+    "printWidth": 80,
+    "singleQuote": true,
+    "semi": true,
+    "trailingComma": "es5",
+    "endOfLine": "auto"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "lint-staged": {
+    "*.{md,html,less,css,scss,json}": [
+      "prettier --write"
+    ],
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --trailing-comma es5 --single-quote --write",
+      "eslint --fix"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
+    }
+  }
+}
