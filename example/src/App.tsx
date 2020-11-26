@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Danmaku from '../../src/index';
-// import Danmaku from '../../lib';
 
 const textArr = Array.from(
   '通过对平面中竖直和水平方向的分析我们将宽泛的弹幕重叠问题收敛为轨道中相邻弹幕两两之间的追及问题最终获得了将候选弹幕挂载到合适轨道中的调度策略'
@@ -104,7 +103,7 @@ const TestDanmaku: React.FC = () => {
           }
         }}
       >
-        直接发送随机文本
+        发送随机文本（过多会重叠）
       </button>
       <div>
         <span>输入文本：</span>
@@ -150,7 +149,7 @@ const TestDanmaku: React.FC = () => {
           }
         }}
       >
-        推送到发送队列
+        推送到发送队列（过多不会重叠，会延迟发送）
       </button>
       <button
         type="button"
@@ -231,7 +230,8 @@ const Wrapper = styled.div`
   }
   .danmaku-wrapper {
     width: 90%;
-    height: 300px;
+    height: 70vw;
+    max-height: 600px;
     background-color: #000;
   }
 `;
