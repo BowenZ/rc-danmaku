@@ -59,6 +59,8 @@ class Danmaku {
   // 弹幕队列定时器
   private queueTimer = 0;
 
+  private isRunningWhenPageHide = true;
+
   static containerClassName = 'danmaku-container';
 
   constructor(ele: string | HTMLElement, options: OptionsType = {}) {
@@ -94,10 +96,12 @@ class Danmaku {
   }
 
   private visibilityChangeEventHandle = (): void => {
-    console.log('====visibility change====', document.visibilityState);
     if (document.visibilityState === 'hidden') {
-      this.pause();
-    } else {
+      this.isRunningWhenPageHide = !this.allPaused;
+      if (!this.allPaused) {
+        this.pause();
+      }
+    } else if (this.isRunningWhenPageHide && this.allPaused) {
       this.resume();
     }
   };
