@@ -19,6 +19,8 @@ yarn-debug.log*
 yarn-error.log*
 
 lib/
+es/
 esm/
+dist/
 build/
 types/

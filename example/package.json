@@ -2,6 +2,7 @@
   "name": "example",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://bowenz.github.io/pages/rc-danmaku",
   "peerDependencies": {
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
@@ -47,6 +48,7 @@
     "postcss-preset-env": "6.7.0",
     "postcss-safe-parser": "5.0.2",
     "prompts": "2.4.0",
+    "rc-danmaku": "^0.1.0",
     "react-app-polyfill": "^2.0.0",
     "react-dev-utils": "^11.0.1",
     "react-refresh": "^0.8.3",
