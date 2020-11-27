@@ -5,19 +5,19 @@
 [![bundlephobia](https://badgen.net/bundlephobia/min/rc-danmaku)](https://bundlephobia.com/result?p=rc-danmaku@latest)
 ![license](https://badgen.net/npm/license/rc-danmaku)
 
-🚀React 弹幕组件 - 基于 React 17 和 TypeScript4 开发
+🚀 React 弹幕组件 - 基于 React 17 和 TypeScript4 开发
 
 > 自用开发，若发现问题欢迎提 issue，有功能需求欢迎提 pr 或者在 issue 中反馈
 
-## 示例页面
+## 🌰 示例页面
 
 🔗 [https://bowenz.github.io/pages/rc-danmaku/](https://bowenz.github.io/pages/rc-danmaku/)
 
-## 安装
+## 📦 安装
 
 `npm install rc-danmaku -S`
 
-## 快速开始
+## 🚗 快速开始
 
 复制下方代码可以直接使用（代码 TypeScript 版本）
 
@@ -60,7 +60,7 @@ const TestDanmaku: React.FC = () => {
 export default TestDanmaku;
 ```
 
-## 文档
+## 📖 文档
 
 ### 创建实例
 
@@ -111,6 +111,9 @@ danmakuIns.destroy();
 ```
 
 ### 完整使用代码示例
+
+<details>
+<summary>展开查看</summary>
 
 ```tsx
 import React, { useEffect, useRef, useState } from 'react';
@@ -360,3 +363,5 @@ const TestNode = styled.div`
   text-align: center;
 `;
 ```
+
+</details>
