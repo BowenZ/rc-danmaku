@@ -1,12 +1,17 @@
 # rc-danmaku
 
+[![npm-version](https://badgen.net/npm/v/rc-danmaku)](https://www.npmjs.com/package/rc-danmaku)
+[![github-stars](https://badgen.net/github/stars/BowenZ/rc-danmaku)](https://github.com/BowenZ/rc-danmaku)
+[![bundlephobia](https://badgen.net/bundlephobia/min/rc-danmaku)](https://bundlephobia.com/result?p=rc-danmaku@latest)
+![license](https://badgen.net/npm/license/rc-danmaku)
+
 🚀React 弹幕组件 - 基于 React 17 和 TypeScript4 开发
 
 > 自用开发，若发现问题欢迎提 issue，有功能需求欢迎提 pr 或者在 issue 中反馈
 
 ## 示例页面
 
-[🔗https://bowenz.github.io/pages/rc-danmaku/](https://bowenz.github.io/pages/rc-danmaku/)
+🔗 [https://bowenz.github.io/pages/rc-danmaku/](https://bowenz.github.io/pages/rc-danmaku/)
 
 ## 安装
 

@@ -1,6 +1,6 @@
 {
   "name": "rc-danmaku",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React 弹幕组件",
   "repository": "BowenZ/rc-danmaku",
   "homepage": "https://github.com/BowenZ/rc-danmaku",
@@ -10,7 +10,8 @@
     "danmaku",
     "barrage",
     "bullet",
-    "react"
+    "react",
+    "typescript"
   ],
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -18,7 +19,7 @@
     "build-types": "tsc -d --emitDeclarationOnly --outDir ./types --noEmit false",
     "build": "node tools/build.js",
     "lint": "eslint src --ext .ts,.tsx,.js,.jsx",
-    "pub": "npm run build && npm publish"
+    "pub": "nrm use npm && npm run build && npm publish"
   },
   "files": [
     "lib",

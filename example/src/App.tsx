@@ -208,6 +208,7 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
+  height: calc(100vh - 45px);
   input[type='text'] {
     padding: 0.2em;
     width: 150px;
