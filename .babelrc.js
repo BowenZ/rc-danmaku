@@ -71,6 +71,7 @@ module.exports = (api) => {
       '@babel/preset-typescript',
     ],
     plugins: [
+      'transform-remove-console',
       '@babel/proposal-class-properties',
       [
         '@babel/plugin-transform-runtime',

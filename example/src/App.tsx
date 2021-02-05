@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import Danmaku from '../../src/index';
-// import Danmaku from 'rc-danmaku';
+// import Danmaku from '../../src/index';
+import Danmaku from 'rc-danmaku';
 
 const textArr = Array.from(
   '通过对平面中竖直和水平方向的分析我们将宽泛的弹幕重叠问题收敛为轨道中相邻弹幕两两之间的追及问题最终获得了将候选弹幕挂载到合适轨道中的调度策略'
@@ -34,7 +34,7 @@ const TestDanmaku: React.FC = () => {
       rowHeight: 60, // 弹幕轨道高度，默认40（单位px）
       speed: 120, // 弹幕速度，默认100（单位px/s）
       opacity: 1, // 弹幕透明度，默认为1，范围 0-1
-      maxRow: 5, // 弹幕最大轨道数，会根据容器高度自动计算，也可以手动赋值
+      maxRow: 0, // 弹幕最大轨道数，会根据容器高度自动计算，也可以手动赋值（此处设为0表示使用自动计算高度）
       minGapWidth: 30, //弹幕之前的最小间隔宽度，默认值20（单位px）
     });
     danmakuInsRef.current = danmakuIns;
