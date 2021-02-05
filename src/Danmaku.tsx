@@ -1,6 +1,5 @@
 import React from 'react';
 import Bullet from './Bullet';
-import { valueIsNotNulish } from './utils';
 
 type BulletNodeType = React.ReactElement | string;
 
@@ -15,6 +14,12 @@ type OptionsType = {
   maxRow?: number;
   // 弹幕之前的最小间隔宽度
   minGapWidth?: number;
+  // 弹幕入场回调
+  onBulletIn?: () => void;
+  // 弹幕出场回调
+  onBulletOut?: () => void;
+  // 队列中的弹幕全部已经发出的回调
+  onQueueRunOut?: () => void;
 };
 
 type EmitOptionsType = {
@@ -60,6 +65,8 @@ class Danmaku {
   // 是否已被销毁
   isDestroyed = false;
 
+  private options: OptionsType | Record<string, never> = {};
+
   // 当前展示的弹幕数组
   private trackList: Array<Array<Bullet>> = [];
 
@@ -74,7 +81,7 @@ class Danmaku {
   static containerClassName = 'danmaku-container';
 
   constructor(ele: string | HTMLElement, options: OptionsType = {}) {
-    Danmaku.optionsParamsCheck();
+    Danmaku.optionsParamsCheck(options);
     if (typeof ele === 'string') {
       this.container = document.querySelector(ele);
       if (!this.container) {
@@ -83,6 +90,7 @@ class Danmaku {
     } else {
       this.container = ele;
     }
+    this.options = options;
     this.rowHeight = options.rowHeight ?? Danmaku.DEFAULT_ROW_HEIGHT;
     this.speed = options.speed ?? Danmaku.DEFAULT_SPEED;
     this.opacity = options.opacity ?? Danmaku.DEFAULT_OPACITY;
@@ -96,7 +104,7 @@ class Danmaku {
     this.width = width;
     this.height = height;
     this.trackCount = Math.floor(height / this.rowHeight);
-    if (options.maxRow) {
+    if (options.maxRow && options.maxRow > 0) {
       this.trackCount = Math.min(options.maxRow, this.trackCount);
     }
     console.log('====trackCount====', this.trackCount);
@@ -113,7 +121,7 @@ class Danmaku {
 
   // 工具方法，数字是否大于0
   static numberIsGreaterThanZero = (number: number | undefined): boolean => {
-    return number !== undefined && number > 0;
+    return number !== undefined && number >= 0;
   };
 
   // 检查参数是否合法
@@ -121,10 +129,11 @@ class Danmaku {
     (['rowHeight', 'speed', 'opacity', 'maxRow', 'minGapWidth'] as Array<
       keyof OptionsType
     >).forEach((item) => {
-      if (valueIsNotNulish(options[item])) {
-        if (!Danmaku.numberIsGreaterThanZero(options[item])) {
-          throw new Error(`rc-danmaku: ${item} must be greater than 0`);
-        }
+      if (
+        typeof options[item] === 'number' &&
+        !Danmaku.numberIsGreaterThanZero(options[item] as number)
+      ) {
+        throw new Error(`rc-danmaku: ${item} 必须大于等于0`);
       }
     });
   }
@@ -182,6 +191,7 @@ class Danmaku {
         this.trackList[targetTrackIndex] = this.trackList[
           targetTrackIndex
         ].filter((item) => !item.isFinished);
+        this.options.onBulletOut?.();
       },
     });
 
@@ -189,6 +199,11 @@ class Danmaku {
 
     if (!this.allPaused) {
       bulletItem.run();
+      this.options.onBulletIn?.();
+    }
+
+    if (this.getRestAmount() === 0) {
+      this.options.onQueueRunOut?.();
     }
   }
 
@@ -297,6 +312,20 @@ class Danmaku {
       this.container = null;
       this.isDestroyed = true;
     }
+  }
+
+  /**
+   * 获取剩余还没发出的弹幕数量
+   */
+  public getRestAmount(): number {
+    return this.queue.length;
+  }
+
+  /**
+   * 清空弹幕队列（只能清空排队中还未发出的弹幕）
+   */
+  public clearQueue(): void {
+    this.queue = [];
   }
 }
 

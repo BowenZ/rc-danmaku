@@ -107,7 +107,7 @@ class Bullet {
     }
 
     this.element.addEventListener('transitionend', () => {
-      console.log('====transition end====');
+      // console.log('====transition end====');
       this.destroy();
       this.status = BulletStatus.FINISHED;
       this.isTotalOut = false;
@@ -132,7 +132,7 @@ class Bullet {
     const totalOutTime = notOutWidth / this.speed;
 
     this.totalOutTimer = setTimeout(() => {
-      console.log('====set is total out====');
+      // console.log('====set is total out====');
       this.isTotalOut = true;
       this.totalOutTimer = 0;
       if (this.onTotalOut) {

@@ -7,7 +7,7 @@
 
 🚀 React 弹幕组件 - 基于 React 17 和 TypeScript4 开发
 
-> 自用开发，若发现问题欢迎提 issue，有功能需求欢迎提 pr 或者在 issue 中反馈
+> 自用开发，若发现问题欢迎提 issue，有功能需求欢迎提 pr 或者在 issue 中反馈。
 > 建议 package.json 中版本号锁定为安装时版本（因为目前为止还是自用开发，可能某次更新会对之前版本有影响，如果以后用的人多了，会考虑更加谨慎正规的更新）
 
 ## 🌰 示例页面
@@ -74,6 +74,18 @@ const danmakuIns = new Danmaku('.danmaku-wrapper', {
   opacity: 1, // 弹幕透明度，默认为1，范围 0-1
   maxRow: 0, // 弹幕最大轨道数，会根据容器高度自动计算，也可以手动赋值（此处设为0表示使用自动计算高度）
   minGapWidth: 30, //弹幕之前的最小间隔宽度，默认值20（单位px）
+  // 每个弹幕进入时触发
+  onBulletIn() {
+    console.log('====bullet in====');
+  },
+  // 每个弹幕消失时触发
+  onBulletOut() {
+    console.log('====bullet out====');
+  },
+  // 队列中的弹幕发送完时触发（每次发送弹幕都会检查，不管用何种方式发送，手动清空队列不会触发该事件）
+  onQueueRunOut() {
+    console.log('====queue run out====');
+  },
 });
 ```
 
@@ -111,6 +123,12 @@ danmakuIns.resume();
 
 // 销毁
 danmakuIns.destroy();
+
+// 查看弹幕队列中剩余的数量
+danmakuIns.getRestAmount();
+
+// 清空排队中的弹幕队列（已发送的不会被清，不会触发onQueueRunOut事件）
+danmakuIns.clearQueue();
 ```
 
 ### 完整使用代码示例
