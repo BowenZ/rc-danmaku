@@ -66,11 +66,13 @@ export default TestDanmaku;
 
 ```tsx
 // 第一个参数是弹幕容器，可以传string类型的选择器，或者直接传dom元素
-// 第二个参数是可选参数，包含弹幕配置
+// 第二个object类型的参数是可选参数，包含弹幕配置，里边的所有项均不是必填项
 const danmakuIns = new Danmaku('.danmaku-wrapper', {
-  rowHeight: 40, // 弹幕轨道高度，默认40（单位px）
-  speed: 100, // 弹幕速度，默认100（单位px/s）
+  rowHeight: 60, // 弹幕轨道高度，默认40（单位px）
+  speed: 120, // 弹幕速度，默认100（单位px/s）
   opacity: 1, // 弹幕透明度，默认为1，范围 0-1
+  maxRow: 5, // 弹幕最大轨道数，会根据容器高度自动计算，也可以手动赋值
+  minGapWidth: 30, //弹幕之前的最小间隔宽度，默认值20（单位px）
 });
 ```
 
@@ -145,9 +147,14 @@ const TestDanmaku: React.FC = () => {
   const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
+    // 第一个参数是弹幕容器，可以传string类型的选择器，或者直接传dom元素
+    // 第二个object类型的参数是可选参数，包含弹幕配置，里边的所有项均不是必填项
     const danmakuIns = new Danmaku('.danmaku-wrapper', {
-      rowHeight: 40,
-      speed: 120,
+      rowHeight: 60, // 弹幕轨道高度，默认40（单位px）
+      speed: 120, // 弹幕速度，默认100（单位px/s）
+      opacity: 1, // 弹幕透明度，默认为1，范围 0-1
+      maxRow: 5, // 弹幕最大轨道数，会根据容器高度自动计算，也可以手动赋值
+      minGapWidth: 30, //弹幕之前的最小间隔宽度，默认值20（单位px）
     });
     danmakuInsRef.current = danmakuIns;
   }, []);
@@ -266,7 +273,17 @@ const TestDanmaku: React.FC = () => {
           }
         }}
       >
-        推送到发送队列（过多不会重叠，会延迟发送）
+        推送随机文字到发送队列（过多不会重叠，会延迟发送）
+      </button>
+      <button
+        type="button"
+        onClick={(): void => {
+          if (danmakuInsRef.current) {
+            danmakuInsRef.current.push(<TestNode>react node</TestNode>);
+          }
+        }}
+      >
+        推送React节点到发送队列（过多不会重叠，会延迟发送）
       </button>
       <button
         type="button"
@@ -283,7 +300,21 @@ const TestDanmaku: React.FC = () => {
           }
         }}
       >
-        随机推送20条
+        随机推送20条文字弹幕
+      </button>
+      <button
+        type="button"
+        onClick={(): void => {
+          if (danmakuInsRef.current) {
+            danmakuInsRef.current.pushAll(
+              Array(20)
+                .fill(null)
+                .map(() => <TestNode>react node</TestNode>)
+            );
+          }
+        }}
+      >
+        随机推送20条React节点
       </button>
       <div>
         {isPaused ? (
@@ -311,7 +342,7 @@ const TestDanmaku: React.FC = () => {
           }
         }}
       >
-        销毁
+        销毁（销毁后无法再发送弹幕）
       </button>
     </Wrapper>
   );
@@ -325,6 +356,7 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
+  height: calc(100vh - 45px);
   input[type='text'] {
     padding: 0.2em;
     width: 150px;
@@ -347,8 +379,8 @@ const Wrapper = styled.div`
   }
   .danmaku-wrapper {
     width: 90%;
-    height: 70vw;
-    max-height: 600px;
+    height: 60vw;
+    max-height: 500px;
     background-color: #000;
   }
 `;

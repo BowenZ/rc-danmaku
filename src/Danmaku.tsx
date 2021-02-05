@@ -1,12 +1,20 @@
 import React from 'react';
 import Bullet from './Bullet';
+import { valueIsNotNulish } from './utils';
 
 type BulletNodeType = React.ReactElement | string;
 
 type OptionsType = {
+  // 弹幕轨道高度
   rowHeight?: number;
+  // 弹幕速度
   speed?: number;
+  // 弹幕初始透明度
   opacity?: number;
+  // 弹幕最大轨道数
+  maxRow?: number;
+  // 弹幕之前的最小间隔宽度
+  minGapWidth?: number;
 };
 
 type EmitOptionsType = {
@@ -19,6 +27,8 @@ class Danmaku {
   static DEFAULT_SPEED = 100;
 
   static DEFAULT_OPACITY = 1;
+
+  static DEFAULT_GAP_WIDTH = 20;
 
   // 弹幕容器
   private container: HTMLElement | null = null;
@@ -41,6 +51,9 @@ class Danmaku {
   // 弹幕透明度 0-1
   opacity = 1;
 
+  // 弹幕之前的最小间隔宽度
+  minGapWidth = 0;
+
   // 是否处于暂停中
   allPaused = false;
 
@@ -56,14 +69,12 @@ class Danmaku {
     options?: EmitOptionsType;
   }> = [];
 
-  // 弹幕队列定时器
-  private queueTimer = 0;
-
   private isRunningWhenPageHide = true;
 
   static containerClassName = 'danmaku-container';
 
   constructor(ele: string | HTMLElement, options: OptionsType = {}) {
+    Danmaku.optionsParamsCheck();
     if (typeof ele === 'string') {
       this.container = document.querySelector(ele);
       if (!this.container) {
@@ -75,6 +86,7 @@ class Danmaku {
     this.rowHeight = options.rowHeight ?? Danmaku.DEFAULT_ROW_HEIGHT;
     this.speed = options.speed ?? Danmaku.DEFAULT_SPEED;
     this.opacity = options.opacity ?? Danmaku.DEFAULT_OPACITY;
+    this.minGapWidth = options.minGapWidth ?? Danmaku.DEFAULT_GAP_WIDTH;
 
     this.container.classList.add(Danmaku.containerClassName);
     this.container.style.position = 'relative';
@@ -84,6 +96,10 @@ class Danmaku {
     this.width = width;
     this.height = height;
     this.trackCount = Math.floor(height / this.rowHeight);
+    if (options.maxRow) {
+      this.trackCount = Math.min(options.maxRow, this.trackCount);
+    }
+    console.log('====trackCount====', this.trackCount);
     this.trackList = Array(this.trackCount)
       .fill(null)
       .map(() => []);
@@ -95,6 +111,25 @@ class Danmaku {
     );
   }
 
+  // 工具方法，数字是否大于0
+  static numberIsGreaterThanZero = (number: number | undefined): boolean => {
+    return number !== undefined && number > 0;
+  };
+
+  // 检查参数是否合法
+  static optionsParamsCheck(options: OptionsType = {}): void {
+    (['rowHeight', 'speed', 'opacity', 'maxRow', 'minGapWidth'] as Array<
+      keyof OptionsType
+    >).forEach((item) => {
+      if (valueIsNotNulish(options[item])) {
+        if (!Danmaku.numberIsGreaterThanZero(options[item])) {
+          throw new Error(`rc-danmaku: ${item} must be greater than 0`);
+        }
+      }
+    });
+  }
+
+  // 页面不可见时暂停弹幕滚动
   private visibilityChangeEventHandle = (): void => {
     if (document.visibilityState === 'hidden') {
       this.isRunningWhenPageHide = !this.allPaused;
@@ -139,6 +174,10 @@ class Danmaku {
       targetContainer: this.container,
       trackIndex,
       rowHeight: this.rowHeight,
+      minGapWidth: this.minGapWidth,
+      onTotalOut: (): void => {
+        this.popBulletToFreeTrack();
+      },
       onDestroy: (targetTrackIndex): void => {
         this.trackList[targetTrackIndex] = this.trackList[
           targetTrackIndex
@@ -161,6 +200,18 @@ class Danmaku {
     );
   }
 
+  // 如果队列中还有弹幕并且有空闲的轨道，则弹出
+  private popBulletToFreeTrack(): void {
+    if (this.queue.length > 0 && this.hasFreeTrack()) {
+      console.log('====queue run====');
+      const item = this.queue.shift();
+      if (item) {
+        this.emit(item.node, item.options);
+        this.popBulletToFreeTrack();
+      }
+    }
+  }
+
   /**
    * 当有空闲弹幕轨道时，直接发送弹幕，效果通emit方法一样，
    * 若全部轨道都占用，则将弹幕暂存到队列中，待空闲后再依次放出
@@ -177,10 +228,10 @@ class Danmaku {
         node,
         options,
       });
-      this.startQueueTimer();
     }
   }
 
+  // 推送一个弹幕数组
   public pushAll(
     nodeArr: Array<BulletNodeType>,
     options: EmitOptionsType = {}
@@ -194,36 +245,7 @@ class Danmaku {
         options,
       }))
     );
-    this.startQueueTimer();
-  }
-
-  // 清楚弹幕队列计时器
-  private clearQueueTimer(): void {
-    if (this.queueTimer) {
-      clearInterval(this.queueTimer);
-      this.queueTimer = 0;
-    }
-  }
-
-  // 开始弹幕队列计时器，每次触发检查队列中是否有弹幕，若有的话就发送出来，没有则清楚计时
-  private startQueueTimer(): void {
-    if (this.queueTimer || this.allPaused || this.isDestroyed) {
-      return;
-    }
-    this.queueTimer = setInterval(() => {
-      if (this.queue.length > 0) {
-        console.log('====queue run====');
-        if (this.hasFreeTrack()) {
-          const item = this.queue.shift();
-          if (item) {
-            this.emit(item.node, item.options);
-          }
-        }
-      } else {
-        console.log('====queue clear====');
-        this.clearQueueTimer();
-      }
-    }, 200);
+    this.popBulletToFreeTrack();
   }
 
   /**
@@ -234,7 +256,6 @@ class Danmaku {
       return;
     }
     this.allPaused = true;
-    this.clearQueueTimer();
     this.trackList.forEach((list) =>
       list.forEach((item) => {
         item.pause();
@@ -250,7 +271,6 @@ class Danmaku {
       return;
     }
     this.allPaused = false;
-    this.startQueueTimer();
     this.trackList.forEach((list) =>
       list.forEach((item) => {
         item.run();
@@ -263,7 +283,6 @@ class Danmaku {
    */
   public destroy(): void {
     if (this.container) {
-      this.clearQueueTimer();
       this.trackList.forEach((list) =>
         list.forEach((item) => {
           item.destroy();

@@ -31,6 +31,9 @@ class Bullet {
   // 弹幕行高
   rowHeight: number;
 
+  // 弹幕完全显示的回调
+  onTotalOut: ((trackIndex: number) => void) | undefined;
+
   // 是否全部出现
   public isTotalOut = false;
 
@@ -49,6 +52,8 @@ class Bullet {
       targetContainer: HTMLElement;
       trackIndex: number;
       rowHeight: number;
+      minGapWidth?: number;
+      onTotalOut?: (trackIndex: number) => void;
       onDestroy(trackIndex: number): void;
     }
   ) {
@@ -56,6 +61,7 @@ class Bullet {
     this.targetContainer = options.targetContainer;
     this.trackIndex = options.trackIndex;
     this.rowHeight = options.rowHeight;
+    this.onTotalOut = options.onTotalOut;
     const div = document.createElement('div');
     div.className = 'bullet-item';
     div.setAttribute(
@@ -96,6 +102,9 @@ class Bullet {
     const { width } = this.targetContainer.getBoundingClientRect();
     div.style.left = `${width}px`;
     div.style.top = `${this.trackIndex * this.rowHeight}px`;
+    if (options.minGapWidth && options.minGapWidth > 0) {
+      div.style.paddingRight = `${options.minGapWidth}px`;
+    }
 
     this.element.addEventListener('transitionend', () => {
       console.log('====transition end====');
@@ -126,7 +135,10 @@ class Bullet {
       console.log('====set is total out====');
       this.isTotalOut = true;
       this.totalOutTimer = 0;
-    }, totalOutTime * 1000 + 500);
+      if (this.onTotalOut) {
+        this.onTotalOut(this.trackIndex);
+      }
+    }, totalOutTime * 1000);
   }
 
   // 清楚弹幕完全显示状态的计时器
