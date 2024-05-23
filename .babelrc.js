@@ -72,7 +72,7 @@ module.exports = (api) => {
     ],
     plugins: [
       'transform-remove-console',
-      '@babel/proposal-class-properties',
+      '@babel/transform-class-properties',
       [
         '@babel/plugin-transform-runtime',
         {

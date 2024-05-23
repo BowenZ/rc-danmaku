@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import Danmaku from '../../src/index';
-// import Danmaku from 'rc-danmaku';
+// import Danmaku from '../../src/index';
+import Danmaku from 'rc-danmaku';
 
 const textArr = Array.from(
   '通过对平面中竖直和水平方向的分析我们将宽泛的弹幕重叠问题收敛为轨道中相邻弹幕两两之间的追及问题最终获得了将候选弹幕挂载到合适轨道中的调度策略'
@@ -59,9 +59,9 @@ const TestDanmaku: React.FC = () => {
 
   useEffect(() => {
     if (showColor) {
-      colorRef.current = (document.querySelector(
-        '.color-piker'
-      ) as HTMLInputElement).value;
+      colorRef.current = (
+        document.querySelector('.color-piker') as HTMLInputElement
+      ).value;
     }
   }, [showColor]);
 

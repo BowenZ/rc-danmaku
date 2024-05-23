@@ -124,11 +124,17 @@ class Danmaku {
     return number !== undefined && number >= 0;
   };
 
+  static numberTypeParams: Array<keyof OptionsType> = [
+    'rowHeight',
+    'speed',
+    'opacity',
+    'maxRow',
+    'minGapWidth',
+  ];
+
   // 检查参数是否合法
   static optionsParamsCheck(options: OptionsType = {}): void {
-    (['rowHeight', 'speed', 'opacity', 'maxRow', 'minGapWidth'] as Array<
-      keyof OptionsType
-    >).forEach((item) => {
+    Danmaku.numberTypeParams.forEach((item) => {
       if (
         typeof options[item] === 'number' &&
         !Danmaku.numberIsGreaterThanZero(options[item] as number)
@@ -152,6 +158,7 @@ class Danmaku {
 
   // 获取相对最空闲的弹幕轨道
   private getTrackIndex(): number {
+    console.log('====getTrackIndex====', this.trackList.length, this.trackList);
     if (!this.trackList.length) {
       return 0;
     }
@@ -159,9 +166,11 @@ class Danmaku {
     let minCount = this.trackList[0].length;
     this.trackList.forEach((list, index) => {
       const { length } = list.filter((bullet) => !bullet.isTotalOut);
+      console.log('====length====', length, minCount);
       if (length < minCount) {
         minCount = length;
         result = index;
+        console.log('====set result====', index);
       }
     });
     return result;
@@ -176,6 +185,7 @@ class Danmaku {
       return;
     }
     const trackIndex = this.getTrackIndex();
+    console.log('====emit trackIndex====', trackIndex);
     const bulletItem = new Bullet(node, {
       color: options.color,
       speed: this.speed,
@@ -210,8 +220,7 @@ class Danmaku {
   // 是否有空闲轨道（该轨道发送弹幕时不会和上一条弹幕重叠）
   private hasFreeTrack(): boolean {
     return this.trackList.some(
-      (bullets) =>
-        !bullets || !bullets.length || bullets[bullets.length - 1].isTotalOut
+      (bullets) => !bullets?.length || bullets[bullets.length - 1].isTotalOut
     );
   }
 
@@ -236,6 +245,7 @@ class Danmaku {
     if (this.isDestroyed) {
       return;
     }
+    console.log('====push====', this.hasFreeTrack());
     if (this.hasFreeTrack()) {
       this.emit(node, options);
     } else {

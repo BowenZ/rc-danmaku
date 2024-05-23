@@ -28,7 +28,8 @@
     "paths": {
       // 模块名到基于 baseUrl 的路径映射的列表
       "*": ["types/*"],
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "tslib": ["./node_modules/tslib/tslib.d.ts"]
     }
   },
   "include": ["src"],
