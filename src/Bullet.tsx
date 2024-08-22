@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { renderReactNode, unmountReactNode } from './utils';
 
 enum BulletStatus {
   // 等待中
@@ -93,7 +93,7 @@ class Bullet {
         node
       );
 
-    ReactDOM.render(reactNode, div);
+    renderReactNode(reactNode, div);
 
     this.element = div;
 
@@ -115,7 +115,7 @@ class Bullet {
     });
   }
 
-  // 根据弹幕当前位置计算出弹幕完全显示需要的时间，并在改时间后将弹幕状态设置为完全可见状态
+  // 根据弹幕当前位置计算出弹幕完全显示需要的时间，并在该时间后将弹幕状态设置为完全可见状态
   private startTotalOutTimer(): void {
     if (this.totalOutTimer) {
       return;
@@ -131,7 +131,7 @@ class Bullet {
     // 该条弹幕完全展示出所需的时间
     const totalOutTime = notOutWidth / this.speed;
 
-    this.totalOutTimer = setTimeout(() => {
+    this.totalOutTimer = window.setTimeout(() => {
       // console.log('====set is total out====');
       this.isTotalOut = true;
       this.totalOutTimer = 0;
@@ -151,26 +151,26 @@ class Bullet {
 
   // 弹幕运行
   public run(): void {
-    const { width } = this.targetContainer.getBoundingClientRect();
-    this.element.style.transition = `transform ${(
-      (width + this.element.scrollWidth - this.rightDistance) /
-      this.speed
-    ).toFixed(2)}s linear`;
-    this.element.style.transform = `translate3d(-${
-      width + this.element.scrollWidth
-    }px, 0, 0)`;
-    this.status = BulletStatus.RUNNING;
-    this.startTotalOutTimer();
+    setTimeout(() => {
+      const { width } = this.targetContainer.getBoundingClientRect();
+      this.element.style.transition = `transform ${(
+        (width + this.element.scrollWidth - this.rightDistance) /
+        this.speed
+      ).toFixed(2)}s linear`;
+      this.element.style.transform = `translate3d(-${
+        width + this.element.scrollWidth
+      }px, 0, 0)`;
+      this.status = BulletStatus.RUNNING;
+      this.startTotalOutTimer();
+    }, 10);
   }
 
   // 弹幕暂停
   public pause(): void {
-    const {
-      left: containerLeft,
-      width: containeWidth,
-    } = this.targetContainer.getBoundingClientRect();
+    const { left: containerLeft, width: containerWidth } =
+      this.targetContainer.getBoundingClientRect();
     const { left: bulletLeft } = this.element.getBoundingClientRect();
-    this.rightDistance = containeWidth - (bulletLeft - containerLeft);
+    this.rightDistance = containerWidth - (bulletLeft - containerLeft);
     this.element.style.transform = `translate3d(-${this.rightDistance}px, 0, 0)`;
     this.element.style.transition = 'transform 0s linear 0s';
     this.status = BulletStatus.PAUSED;
@@ -182,7 +182,7 @@ class Bullet {
     if (this.totalOutTimer) {
       clearTimeout(this.totalOutTimer);
     }
-    ReactDOM.unmountComponentAtNode(this.element);
+    unmountReactNode(this.element);
     this.element.remove();
   }
 

@@ -46,6 +46,8 @@ const babel = (outDir, envName) =>
   );
 
 /**
+ * Run babel over the src directory and output
+ * compiled common js files to ./lib.
  * 编译为commonjs
  */
 const buildLib = step('commonjs modules', async () => {
@@ -55,6 +57,8 @@ const buildLib = step('commonjs modules', async () => {
 });
 
 /**
+ * Run babel over the src directory and output
+ * compiled es modules (but otherwise es5) to /es
  * 编译为esmodule
  */
 const buildEsm = step('es modules', async () => {
@@ -64,6 +68,8 @@ const buildEsm = step('es modules', async () => {
 });
 
 /**
+ * Bundles a minified and unminified version of react-bootstrap including
+ * all it's immediate dependencies (excluding React, ReactDOM, etc)
  * 编译为单一文件
  */
 const buildDist = step(
@@ -75,6 +81,8 @@ const buildDist = step(
         [getConfig(distRoot, false), getConfig(distRoot, true)],
         async (err, stats) => {
           if (err || stats.hasErrors()) {
+            console.log('====buildDist err====', err);
+            console.log('====buildDist stats====', stats.toJson().errors);
             reject(err || stats.toJson().errors);
             return;
           }
