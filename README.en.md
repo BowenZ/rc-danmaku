@@ -5,26 +5,24 @@
 [![bundlephobia](https://badgen.net/bundlephobia/min/rc-danmaku)](https://bundlephobia.com/result?p=rc-danmaku@latest)
 ![license](https://badgen.net/npm/license/rc-danmaku)
 
-[English README](./README.en.md)
+[中文 README](./README.md)
 
-[更新日志](./CHANGELOG.md)
+🚀 React Danmaku Component - Supports React 17/18 and TypeScript
 
-🚀 React 弹幕组件 - 支持 React 17/18 和 TypeScript
+> 🌟 Updated to support React 18
+> 🐞 If you encounter issues, please submit an issue. For feature requests, please submit a pull request or provide feedback in the issue section.
 
-> 🌟 已更新支持React18
-> 🐞 若发现问题欢迎提 issue，有功能需求欢迎提 pr 或者在 issue 中反馈。
-
-## 🌰 示例页面
+## 🌰 Example Page
 
 🔗 [https://bowenz.github.io/pages/rc-danmaku/](https://bowenz.github.io/pages/rc-danmaku/)
 
-## 📦 安装
+## 📦 Installation
 
 `npm install rc-danmaku -S`
 
-## 🚗 快速开始
+## 🚗 Quick Start
 
-复制下方代码可以直接使用（代码 TypeScript 版本）
+Copy the following code to get started (TypeScript version):
 
 ```tsx
 import React, { useEffect, useRef } from 'react';
@@ -56,7 +54,7 @@ const TestDanmaku: React.FC = () => {
           }
         }}
       >
-        发送弹幕
+        Send Danmaku
       </button>
     </div>
   );
@@ -65,80 +63,80 @@ const TestDanmaku: React.FC = () => {
 export default TestDanmaku;
 ```
 
-## 📖 文档
+## 📖 Documentation
 
-### 创建实例
+### Creating an Instance
 
 ```tsx
-// 第一个参数是弹幕容器，可以传string类型的选择器，或者直接传dom元素
-// 第二个object类型的参数是可选参数，包含弹幕配置，里边的所有项均不是必填项
+// The first parameter is the danmaku container. It can be a string selector or a DOM element.
+// The second parameter is an optional object containing danmaku configuration. All items are optional.
 const danmakuIns = new Danmaku('.danmaku-wrapper', {
-  rowHeight: 60, // 弹幕轨道高度，默认40（单位px）
-  speed: 120, // 弹幕速度，默认100（单位px/s）
-  opacity: 1, // 弹幕透明度，默认为1，范围 0-1
-  maxRow: 0, // 弹幕最大轨道数，会根据容器高度自动计算，也可以手动赋值（此处设为0表示使用自动计算高度）
-  minGapWidth: 30, //弹幕之前的最小间隔宽度，默认值20（单位px）
-  // 每个弹幕进入时触发
+  rowHeight: 60, // Height of each danmaku track, default is 40 (in px)
+  speed: 120, // Speed of danmaku, default is 100 (in px/s)
+  opacity: 1, // Opacity of danmaku, default is 1, range 0-1
+  maxRow: 0, // Maximum number of danmaku tracks. It is automatically calculated based on container height, but can be manually set (0 means auto calculation)
+  minGapWidth: 30, // Minimum gap width between danmaku, default is 20 (in px)
+  // Triggered when each danmaku enters
   onBulletIn() {
     console.log('====bullet in====');
   },
-  // 每个弹幕消失时触发
+  // Triggered when each danmaku exits
   onBulletOut() {
     console.log('====bullet out====');
   },
-  // 队列中的弹幕发送完时触发（每次发送弹幕都会检查，不管用何种方式发送，手动清空队列不会触发该事件）
+  // Triggered when the queue of danmaku is empty (checked each time a danmaku is sent, regardless of the sending method; manually clearing the queue does not trigger this event)
   onQueueRunOut() {
     console.log('====queue run out====');
   },
 });
 ```
 
-### 实例方法
+### Instance Methods
 
-初始化后，可调用实例方法发送弹幕
+After initialization, you can use instance methods to send danmaku:
 
 ```tsx
 const danmakuIns = new Danmaku('.danmaku-wrapper');
 
-// 发送文本
+// Send text
 danmakuIns.push('test string');
 
-// 发送指定颜色的文本
+// Send text with specified color
 danmakuIns.push('test string', {
   color: 'red',
 });
 
-// 发送React组件
+// Send React component
 danmakuIns.push(<TestReactComponent />);
 
-// 直接发送文本
-// emit与push的区别是，push会在屏幕中没有空闲位置时暂不发送，等有空位时再发送，
-// emit会不管有没有空位直接发送，传参规则和push完全一样
+// Directly send text
+// The difference between emit and push is that push will delay sending until there is space on the screen,
+// while emit sends immediately regardless of screen space. The parameters are the same as push.
 danmakuIns.emit('test string');
 
-// 批量发送
+// Bulk send
 danmakuIns.pushAll(['test1', 'test2', 'test3']);
 
-// 暂停
+// Pause
 danmakuIns.pause();
 
-// 继续
+// Resume
 danmakuIns.resume();
 
-// 销毁
+// Destroy
 danmakuIns.destroy();
 
-// 查看弹幕队列中剩余的数量
+// Check remaining number of danmaku in the queue
 danmakuIns.getRestAmount();
 
-// 清空排队中的弹幕队列（已发送的不会被清，不会触发onQueueRunOut事件）
+// Clear the danmaku queue (sent danmaku will not be cleared, and this does not trigger the onQueueRunOut event)
 danmakuIns.clearQueue();
 ```
 
-### 完整使用代码示例
+### Full Usage Example
 
 <details>
-<summary>展开查看</summary>
+<summary>Click to expand</summary>
 
 ```tsx
 import React, { useEffect, useRef, useState } from 'react';
@@ -146,7 +144,7 @@ import styled from 'styled-components';
 import Danmaku from 'rc-danmaku';
 
 const textArr = Array.from(
-  '通过对平面中竖直和水平方向的分析我们将宽泛的弹幕重叠问题收敛为轨道中相邻弹幕两两之间的追及问题最终获得了将候选弹幕挂载到合适轨道中的调度策略'
+  'By analyzing the vertical and horizontal directions in the plane, we reduced the broad issue of danmaku overlap to a pursuit problem between adjacent danmaku in the track, eventually obtaining a scheduling strategy to mount candidate danmaku to suitable tracks'
 );
 
 function getRandomIndex(length: number): number {
@@ -170,14 +168,14 @@ const TestDanmaku: React.FC = () => {
   const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
-    // 第一个参数是弹幕容器，可以传string类型的选择器，或者直接传dom元素
-    // 第二个object类型的参数是可选参数，包含弹幕配置，里边的所有项均不是必填项
+    // The first parameter is the danmaku container. It can be a string selector or a DOM element.
+    // The second parameter is an optional object containing danmaku configuration. All items are optional.
     const danmakuIns = new Danmaku('.danmaku-wrapper', {
-      rowHeight: 60, // 弹幕轨道高度，默认40（单位px）
-      speed: 120, // 弹幕速度，默认100（单位px/s）
-      opacity: 1, // 弹幕透明度，默认为1，范围 0-1
-      maxRow: 5, // 弹幕最大轨道数，会根据容器高度自动计算，也可以手动赋值
-      minGapWidth: 30, //弹幕之前的最小间隔宽度，默认值20（单位px）
+      rowHeight: 60, // Height of each danmaku track, default is 40 (in px)
+      speed: 120, // Speed of danmaku, default is 100 (in px/s)
+      opacity: 1, // Opacity of danmaku, default is 1, range 0-1
+      maxRow: 5, // Maximum number of danmaku tracks. It is automatically calculated based on container height, but can be manually set
+      minGapWidth: 30, // Minimum gap width between danmaku, default is 20 (in px)
     });
     danmakuInsRef.current = danmakuIns;
   }, []);
@@ -199,11 +197,12 @@ const TestDanmaku: React.FC = () => {
       }
     }
   }, [isPaused]);
+
   return (
     <Wrapper className="test-danmaku">
       <div className="danmaku-wrapper" />
       <div>
-        <span>透明度</span>
+        <span>Opacity</span>
         <input
           type="range"
           min="0"
@@ -218,7 +217,7 @@ const TestDanmaku: React.FC = () => {
         />
       </div>
       <div>
-        <span>彩色弹幕：</span>
+        <span>Colorful Danmaku:</span>
         <input
           type="checkbox"
           onChange={(e): void => {
@@ -250,10 +249,10 @@ const TestDanmaku: React.FC = () => {
           }
         }}
       >
-        发送随机文本（过多会重叠）
+        Send Random Text (too many may overlap)
       </button>
       <div>
-        <span>输入文本：</span>
+        <span>Input Text:</span>
         <input type="text" className="danmaku-text-input" />
         <button
           type="button"
@@ -273,18 +272,18 @@ const TestDanmaku: React.FC = () => {
             }
           }}
         >
-          发送
+          Send
         </button>
       </div>
       <button
         type="button"
         onClick={(): void => {
           if (danmakuInsRef.current) {
-            danmakuInsRef.current.emit(<TestNode>react node</TestNode>);
+            danmakuInsRef.current.emit(<TestNode>React node</TestNode>);
           }
         }}
       >
-        发送react节点
+        Send React Node
       </button>
       <button
         type="button"
@@ -296,17 +295,17 @@ const TestDanmaku: React.FC = () => {
           }
         }}
       >
-        推送随机文字到发送队列（过多不会重叠，会延迟发送）
+        Push Random Text to Queue (too many will not overlap, will delay sending)
       </button>
       <button
         type="button"
         onClick={(): void => {
           if (danmakuInsRef.current) {
-            danmakuInsRef.current.push(<TestNode>react node</TestNode>);
+            danmakuInsRef.current.push(<TestNode>React node</TestNode>);
           }
         }}
       >
-        推送React节点到发送队列（过多不会重叠，会延迟发送）
+        Push React Node to Queue (too many will not overlap, will delay sending)
       </button>
       <button
         type="button"
@@ -323,7 +322,7 @@ const TestDanmaku: React.FC = () => {
           }
         }}
       >
-        随机推送20条文字弹幕
+        Randomly Push 20 Text Danmaku
       </button>
       <button
         type="button"
@@ -332,18 +331,18 @@ const TestDanmaku: React.FC = () => {
             danmakuInsRef.current.pushAll(
               Array(20)
                 .fill(null)
-                .map(() => <TestNode>react node</TestNode>)
+                .map(() => <TestNode>React node</TestNode>)
             );
           }
         }}
       >
-        随机推送20条React节点
+        Randomly Push 20 React Nodes
       </button>
       <div>
         {isPaused ? (
-          <span style={{ color: 'red' }}>暂停中</span>
+          <span style={{ color: 'red' }}>Paused</span>
         ) : (
-          <span style={{ color: 'green' }}>运行中</span>
+          <span style={{ color: 'green' }}>Running</span>
         )}
       </div>
       <div>
@@ -353,7 +352,7 @@ const TestDanmaku: React.FC = () => {
             setIsPaused((p) => !p);
           }}
         >
-          {isPaused ? '继续' : '暂停'}
+          {isPaused ? 'Resume' : 'Pause'}
         </button>
       </div>
       <button
@@ -361,11 +360,11 @@ const TestDanmaku: React.FC = () => {
         onClick={(): void => {
           if (danmakuInsRef.current) {
             danmakuInsRef.current.destroy();
-            alert('组件已经被销毁，任何操作将会无相应，重新刷新页面再测吧');
+            alert('The component has been destroyed. Any operations will be unresponsive. Please refresh the page to test again.');
           }
         }}
       >
-        销毁（销毁后无法再发送弹幕）
+        Destroy (Cannot send danmaku after destruction)
       </button>
     </Wrapper>
   );
@@ -420,3 +419,5 @@ const TestNode = styled.div`
 ```
 
 </details>
+
+             
