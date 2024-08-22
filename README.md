@@ -11,7 +11,7 @@
 
 🚀 React 弹幕组件 - 支持 React 17/18 和 TypeScript
 
-> 🌟 已更新支持React18
+> 🌟 已更新支持React18，版本号为rc-danmaku@1.2.0-alpha.2，若此版本没有bug，会更新到正式版本号；
 > 🐞 若发现问题欢迎提 issue，有功能需求欢迎提 pr 或者在 issue 中反馈。
 
 ## 🌰 示例页面

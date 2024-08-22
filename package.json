@@ -1,6 +1,6 @@
 {
   "name": "rc-danmaku",
-  "version": "1.2.0-alpha.1",
+  "version": "1.2.0-alpha.2",
   "description": "React bullet screen(danmaku) component | React 弹幕组件",
   "repository": "BowenZ/rc-danmaku",
   "homepage": "https://github.com/BowenZ/rc-danmaku",
@@ -29,6 +29,8 @@
     "build": "node tools/build.js",
     "lint": "eslint src --ext .ts,.tsx,.js,.jsx",
     "pub": "nrm use npm && npm run build && npm publish",
+    "pub:alpha": "nrm use npm && npm run build && npm publish --tag alpha",
+    "pub:beta": "nrm use npm && npm run build && npm publish --tag beta",
     "prepare": "husky install"
   },
   "files": [
