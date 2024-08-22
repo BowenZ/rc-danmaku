@@ -3,16 +3,14 @@ import styled from 'styled-components';
 // import Danmaku from '../../src/index';
 import Danmaku from 'rc-danmaku';
 
-const textArr = Array.from(
-  '通过对平面中竖直和水平方向的分析我们将宽泛的弹幕重叠问题收敛为轨道中相邻弹幕两两之间的追及问题最终获得了将候选弹幕挂载到合适轨道中的调度策略'
-);
+const textArr = Array.from('asdfghjklqwertyuiopzxcvbnm');
 
 function getRandomIndex(length: number): number {
   return Math.floor(Math.random() * length);
 }
 
 function getRandomText(): string {
-  const length = Math.floor(Math.random() * 19) + 1;
+  const length = Math.floor(Math.random() * 19) + 6;
   return Array(length)
     .fill(null)
     .map(() => {
@@ -78,7 +76,7 @@ const TestDanmaku: React.FC = () => {
     <Wrapper className="test-danmaku">
       <div className="danmaku-wrapper" />
       <div>
-        <span>透明度</span>
+        <span>透明度/Opacity</span>
         <input
           type="range"
           min="0"
@@ -93,7 +91,7 @@ const TestDanmaku: React.FC = () => {
         />
       </div>
       <div>
-        <span>彩色弹幕：</span>
+        <span>彩色弹幕/Colorful Danmaku：</span>
         <input
           type="checkbox"
           onChange={(e): void => {
@@ -125,10 +123,11 @@ const TestDanmaku: React.FC = () => {
           }
         }}
       >
-        立即发送随机文本（自动寻找空闲轨道，过多会重叠）
+        立即发送随机文本（自动寻找空闲轨道，过多会重叠）/Send Random Text (too
+        many may overlap)
       </button>
       <div>
-        <span>输入文本：</span>
+        <span>输入文本/Input Text：</span>
         <input type="text" className="danmaku-text-input" />
         <button
           type="button"
@@ -148,7 +147,7 @@ const TestDanmaku: React.FC = () => {
             }
           }}
         >
-          立即发送
+          立即发送/Send
         </button>
       </div>
       <button
@@ -159,7 +158,7 @@ const TestDanmaku: React.FC = () => {
           }
         }}
       >
-        立即发送react节点
+        立即发送react节点/Send React Node
       </button>
       <button
         type="button"
@@ -171,7 +170,8 @@ const TestDanmaku: React.FC = () => {
           }
         }}
       >
-        推送随机文字到发送队列（过多不会重叠，会延迟发送）
+        推送随机文字到发送队列（过多不会重叠，会延迟发送）/Push Random Text to
+        Queue (too many will not overlap, will delay sending)
       </button>
       <button
         type="button"
@@ -181,7 +181,8 @@ const TestDanmaku: React.FC = () => {
           }
         }}
       >
-        推送React节点到发送队列（过多不会重叠，会延迟发送）
+        推送React节点到发送队列（过多不会重叠，会延迟发送）/Push React Node to
+        Queue (too many will not overlap, will delay sending)
       </button>
       <button
         type="button"
@@ -198,7 +199,7 @@ const TestDanmaku: React.FC = () => {
           }
         }}
       >
-        随机推送20条文字弹幕
+        随机推送20条文字弹幕/Randomly Push 20 Text Danmaku
       </button>
       <button
         type="button"
@@ -212,7 +213,7 @@ const TestDanmaku: React.FC = () => {
           }
         }}
       >
-        随机推送20条React节点
+        随机推送20条React节点/Randomly Push 20 React Nodes
       </button>
       <button
         type="button"
@@ -222,13 +223,14 @@ const TestDanmaku: React.FC = () => {
           }
         }}
       >
-        清空排队中的弹幕队列（已发送的不会被清，不会触发onQueueRunOut事件）
+        清空排队中的弹幕队列（已发送的不会被清，不会触发onQueueRunOut事件）/Clear
+        Queue
       </button>
       <div>
         {isPaused ? (
-          <span style={{ color: 'red' }}>暂停中</span>
+          <span style={{ color: 'red' }}>暂停中/Paused</span>
         ) : (
-          <span style={{ color: 'green' }}>运行中</span>
+          <span style={{ color: 'green' }}>运行中/Running</span>
         )}
       </div>
       <div>
@@ -238,7 +240,7 @@ const TestDanmaku: React.FC = () => {
             setIsPaused((p) => !p);
           }}
         >
-          {isPaused ? '继续' : '暂停'}
+          {isPaused ? '继续/Resume' : '暂停/Pause'}
         </button>
       </div>
       <button
@@ -246,11 +248,14 @@ const TestDanmaku: React.FC = () => {
         onClick={(): void => {
           if (danmakuInsRef.current) {
             danmakuInsRef.current.destroy();
-            alert('组件已经被销毁，任何操作将会无相应，重新刷新页面再测吧');
+            alert(
+              '组件已经被销毁，任何操作将会无相应，重新刷新页面再测吧/The component has been destroyed. Any operations will be unresponsive. Please refresh the page to test again.'
+            );
           }
         }}
       >
-        销毁（销毁后无法再发送弹幕）
+        销毁（销毁后无法再发送弹幕）/Destroy (Cannot send danmaku after
+        destruction)
       </button>
     </Wrapper>
   );
