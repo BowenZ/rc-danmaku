@@ -5,8 +5,6 @@ import ReactDOMClient from 'react-dom/client';
 const REACT_VERSION = React.version;
 const REACT_MAJOR_VERSION = parseInt(REACT_VERSION.split('.')[0], 10);
 
-console.log('====REACT_VERSION====', REACT_VERSION);
-
 export const valueIsNotNullish = (value: unknown): boolean => {
   return value !== undefined && value !== null;
 };
